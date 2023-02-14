@@ -1,3 +1,4 @@
+## converts tacotron2 style transcriptions into separate txt files
 filename = "list.txt"
 
 with open(filename, "r") as file:
