@@ -1,3 +1,4 @@
+# converts lab (htk format) files into the diffsinger nomidi format
 import os
 
 # Define the directory where the .txt files are located
