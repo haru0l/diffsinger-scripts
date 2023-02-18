@@ -9,7 +9,7 @@ with open('transcriptions.txt', 'w') as outfile:
 
     # Loop over all .txt files in the directory
     for filename in os.listdir(directory):
-        if filename.endswith('.lab'):
+        if filename.endswith('.txt'):
             filepath = os.path.join(directory, filename)
 
             # Open the input file and read the lines
