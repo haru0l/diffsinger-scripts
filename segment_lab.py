@@ -43,7 +43,7 @@ for audio_file_path in audio_files:
         sf.write(segment_file_path, segment_audio, sr, 'PCM_24')
         
         # Create a new text file for the segment
-        segment_text_file_path = f"{os.path.splitext(text_file_path)[0]}_{i+1}.lab"
+        segment_text_file_path = f"{os.path.splitext(text_file_path)[0]}_{i+1}.txt"
         with open(segment_text_file_path, 'w') as f:
             for line in lines:
                 line_start, line_end, label = line.strip().split()
@@ -56,4 +56,4 @@ for audio_file_path in audio_files:
                     continue
                 line_start = max(line_start, start) - start
                 line_end = min(line_end, end) - start
-                f.write(f"{line_start:.4f} {line_end:.4f} {label}\n")
+                f.write(f"{line_start:.4f}\t{line_end:.4f}\t{label}\n")
