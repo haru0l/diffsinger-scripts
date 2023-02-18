@@ -7,16 +7,20 @@ import soundfile as sf
 dir_path = os.getcwd()
 
 # Find all the audio files in the directory
-audio_files = glob.glob(os.path.join(dir_path, "*.wav"))
+audio_files = [f for f in os.listdir(dir_path) if f.endswith(".wav")]
 
-for audio_file_path in audio_files:
+# Create the output directory if it doesn't exist
+out_dir = "./out"
+if not os.path.exists(out_dir):
+    os.mkdir(out_dir)
+
+for audio_file in audio_files:
     # Set the path to the corresponding text file
-    text_file_path = os.path.splitext(audio_file_path)[0] + ".lab"
-    if not os.path.exists(text_file_path):
-        continue
+    text_file = os.path.splitext(audio_file)[0] + ".lab"
+    text_file_path = os.path.join(dir_path, text_file)
 
     # Load the audio file
-    audio, sr = librosa.load(audio_file_path, sr=None)
+    audio, sr = librosa.load(os.path.join(dir_path, audio_file), sr=None)
 
     # Read the text file and create a list of segment start and end times
     segment_times = []
@@ -35,25 +39,27 @@ for audio_file_path in audio_files:
                     segment_times.append((prev_end, start))
                     prev_end = start
                     segment_count += 1
-
+                    
     # Segment the audio file based on the segment start and end times
     for i, (start, end) in enumerate(segment_times):
         segment_audio = audio[int(start*sr):int(end*sr)]
-        segment_file_path = f"{os.path.splitext(audio_file_path)[0]}_{i+1}.wav"
+        segment_file = f"{os.path.splitext(audio_file)[0]}_{i+1}.wav"
+        segment_file_path = os.path.join(out_dir, segment_file)
         sf.write(segment_file_path, segment_audio, sr, 'PCM_24')
-        
+
         # Create a new text file for the segment
-        segment_text_file_path = f"{os.path.splitext(text_file_path)[0]}_{i+1}.txt"
+        segment_text_file = f"{os.path.splitext(text_file)[0]}_{i+1}.txt"
+        segment_text_file_path = os.path.join(out_dir, segment_text_file)
         with open(segment_text_file_path, 'w') as f:
             for line in lines:
                 line_start, line_end, label = line.strip().split()
                 line_start, line_end = float(line_start), float(line_end)
                 line_start /= 10000000
                 line_end /= 10000000
-                if line_start >= end:
-                    break
                 if line_end <= start:
                     continue
+                if line_start >= end:
+                    break
                 line_start = max(line_start, start) - start
                 line_end = min(line_end, end) - start
                 f.write(f"{line_start:.4f}\t{line_end:.4f}\t{label}\n")
