@@ -5,7 +5,7 @@ import os
 directory = os.getcwd()
 
 # Open the output file for writing
-with open('transcriptions.txt', 'w') as outfile:
+with open('transcriptions.smack', 'w') as outfile:
 
     # Loop over all .txt files in the directory
     for filename in os.listdir(directory):
@@ -29,3 +29,5 @@ with open('transcriptions.txt', 'w') as outfile:
 
             # Write the formatted output to the output file
             outfile.write(transcription + '|' + 'ichangethethongstwotimesaday' + '|' + ' '.join(phonemes) + '|rest|0|' + ' '.join(timings) + '|0\n')
+
+os.rename('transcriptions.smack', 'transcriptions.txt')
