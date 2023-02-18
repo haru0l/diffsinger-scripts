@@ -53,4 +53,4 @@ for audio_file_path in audio_files:
                     continue
                 line_start = max(line_start, start) - start
                 line_end = min(line_end, end) - start
-                f.write(f"{line_start:.4f}\t{line_end:.4f}\t{label}\n")
+                f.write(f"{line_start:.4f} {line_end:.4f} {label}\n")
