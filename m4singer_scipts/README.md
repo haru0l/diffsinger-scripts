@@ -1,6 +1,6 @@
 # M4Singer Parsing Scripts
 
-The file format is kinda messy so here's some scripts lmao
+The file format is kinda messy so here's some scripts lmao.
 You can repurpose these so that's why they're here. They'll run in all subfolders so be warned.
 
 ## Script List
